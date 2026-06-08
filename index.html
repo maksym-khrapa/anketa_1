@@ -599,7 +599,7 @@
           <h2>Анкету заповнено!</h2>
 
           <p class="hint">
-            Це поки демо-версія. Далі підключимо збереження відповідей.
+            Дякуємо! Заявку успішно надіслано. Організатори табору зв’яжуться з вами за потреби.
           </p>
         </div>
       </div>
@@ -612,6 +612,7 @@
   </main>
 
   <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw5XQ0aVN5n_Vo6VeqmVKXdF40e1xbB_2EqzL0QHZyJ-QRJJejHFzCPFvBvJK_oFKho/exec";
     let currentStep = 0;
     const total = 8;
 
@@ -691,16 +692,21 @@
       }, 60);
     }
 
-    function nextStep() {
-      if (currentStep === 9) {
-        restart();
-        return;
-      }
-
-      if (currentStep < 9) {
-        showStep(currentStep + 1);
-      }
+  async function nextStep() {
+    if (currentStep === 8) {
+      await submitForm();
+      return;
     }
+
+    if (currentStep === 9) {
+      restart();
+      return;
+    }
+
+    if (currentStep < 9) {
+      showStep(currentStep + 1);
+    }
+  }
 
     function prevStep() {
       if (currentStep > 0 && currentStep < 9) {
@@ -741,6 +747,39 @@
       `).join("");
     }
 
+    async function submitForm() {
+  nextBtn.disabled = true;
+  nextBtn.textContent = "Надсилаємо...";
+
+  const payload = {
+    childName: fields.childName.value.trim(),
+    birthDate: fields.birthDate.value,
+    parentName: fields.parentName.value.trim(),
+    phone: fields.phone.value.trim(),
+    address: fields.address.value.trim(),
+    aboutChild: fields.aboutChild.value.trim(),
+    safety: fields.safety.checked
+  };
+
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    showStep(9);
+
+  } catch (error) {
+    alert("Не вдалося надіслати анкету. Перевірте інтернет і спробуйте ще раз.");
+    nextBtn.disabled = false;
+    nextBtn.textContent = "Підтвердити";
+  }
+}
+    
     function restart() {
       Object.values(fields).forEach(field => {
         if (field.type === "checkbox") {
