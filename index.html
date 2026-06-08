@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Дитячий табір 2026 — Реєстрація</title>
 
   <style>
@@ -17,7 +18,13 @@
       --border: #ead7ad;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+    }
 
     body {
       margin: 0;
@@ -154,6 +161,7 @@
         transform: translateX(18px) scale(.98);
         filter: blur(3px);
       }
+
       to {
         opacity: 1;
         transform: translateX(0) scale(1);
@@ -179,6 +187,7 @@
         opacity: 0;
         transform: scale(.8) rotate(-6deg);
       }
+
       to {
         opacity: 1;
         transform: scale(1) rotate(0);
@@ -187,10 +196,11 @@
 
     h2 {
       margin: 0;
-      font-size: 31px;
-      line-height: 1.05;
-      letter-spacing: -0.045em;
+      font-size: clamp(26px, 8vw, 31px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
       color: #111827;
+      overflow-wrap: break-word;
     }
 
     .hint {
@@ -208,6 +218,8 @@
     input,
     textarea {
       width: 100%;
+      max-width: 100%;
+      min-width: 0;
       border: 2px solid var(--border);
       background: var(--paper2);
       border-radius: 20px;
@@ -218,6 +230,13 @@
       font-family: inherit;
       scroll-margin-bottom: 130px;
       transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
+    }
+
+    input[type="date"] {
+      min-width: 0;
+      max-width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
     }
 
     textarea {
@@ -257,6 +276,7 @@
       width: 22px;
       height: 22px;
       accent-color: var(--orange2);
+      flex-shrink: 0;
     }
 
     .choice.selected {
@@ -286,6 +306,7 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 13px;
+      overflow-wrap: break-word;
     }
 
     .summary-item strong {
@@ -367,8 +388,13 @@
         max-height: 760px;
       }
 
-      .title { font-size: 44px; }
-      h2 { font-size: 38px; }
+      .title {
+        font-size: 44px;
+      }
+
+      h2 {
+        font-size: 38px;
+      }
 
       .content,
       .header,
@@ -441,6 +467,7 @@
           <span id="stepText">Початок</span>
           <span id="counter">0 / 9</span>
         </div>
+
         <div class="progress">
           <div class="progress-fill" id="progressFill"></div>
         </div>
@@ -449,6 +476,7 @@
       <div class="content">
         <div class="screen active" data-step="0">
           <div class="icon">🏕️</div>
+
           <h2>Запрошуємо дитину до табору!</h2>
 
           <p class="hint">
@@ -464,50 +492,84 @@
 
         <div class="screen" data-step="1">
           <div class="icon">🧒</div>
+
           <h2>Як звати дитину?</h2>
-          <p class="hint">Вкажіть повне ім’я та прізвище дитини.</p>
+
+          <p class="hint">
+            Вкажіть повне ім’я та прізвище дитини.
+          </p>
+
           <input id="childName" type="text" placeholder="Наприклад: Іваненко Марк" />
         </div>
 
         <div class="screen" data-step="2">
           <div class="icon">🎂</div>
-          <h2>Дата народження дитини</h2>
-          <p class="hint">Це потрібно для розподілу по вікових командах.</p>
+
+          <h2>Дата народження</h2>
+
+          <p class="hint">
+            Оберіть дату народження дитини.
+          </p>
+
           <input id="birthDate" type="date" />
         </div>
 
         <div class="screen" data-step="3">
           <div class="icon">👨‍👩‍👧</div>
+
           <h2>ПІБ батька або матері</h2>
-          <p class="hint">Вкажіть людину, з якою можна зв’язатися.</p>
+
+          <p class="hint">
+            Вкажіть людину, з якою можна зв’язатися.
+          </p>
+
           <input id="parentName" type="text" placeholder="Наприклад: Іваненко Олена" />
         </div>
 
         <div class="screen" data-step="4">
           <div class="icon">📞</div>
+
           <h2>Номер телефону</h2>
-          <p class="hint">Вкажіть актуальний номер для зв’язку.</p>
+
+          <p class="hint">
+            Вкажіть актуальний номер для зв’язку.
+          </p>
+
           <input id="phone" type="tel" placeholder="+380..." inputmode="tel" />
         </div>
 
         <div class="screen" data-step="5">
           <div class="icon">🏠</div>
+
           <h2>Адреса проживання</h2>
-          <p class="hint">Населений пункт, вулиця, номер будинку або квартири.</p>
+
+          <p class="hint">
+            Населений пункт, вулиця, номер будинку або квартири.
+          </p>
+
           <textarea id="address" placeholder="Наприклад: смт ..., вул. ..., буд. ..."></textarea>
         </div>
 
         <div class="screen" data-step="6">
           <div class="icon">💬</div>
+
           <h2>Що нам важливо знати?</h2>
-          <p class="hint">Алергії, здоров’я, характер, харчування або інші важливі особливості.</p>
+
+          <p class="hint">
+            Алергії, здоров’я, характер, харчування або інші важливі особливості.
+          </p>
+
           <textarea id="aboutChild" placeholder="Наприклад: алергій немає / є алергія на..."></textarea>
         </div>
 
         <div class="screen" data-step="7">
           <div class="icon">🛡️</div>
+
           <h2>Умови безпеки</h2>
-          <p class="hint">Підтвердіть, що ви ознайомлені з умовами.</p>
+
+          <p class="hint">
+            Підтвердіть, що ви ознайомлені з умовами.
+          </p>
 
           <div class="safety">
             У разі масованого ракетного обстрілу табір працювати не буде до стабілізації ситуації.
@@ -521,8 +583,12 @@
 
         <div class="screen" data-step="8">
           <div class="icon">📸</div>
+
           <h2>Фото та відео</h2>
-          <p class="hint">Чи дозволяєте фото/відеозйомку дитини під час табору?</p>
+
+          <p class="hint">
+            Чи дозволяєте фото/відеозйомку дитини під час табору?
+          </p>
 
           <label class="choice">
             <input type="radio" name="photoPermission" value="Так, дозволяю" />
@@ -537,15 +603,24 @@
 
         <div class="screen" data-step="9">
           <div class="icon">📜</div>
+
           <h2>Перевірте анкету</h2>
-          <p class="hint">Переконайтеся, що все заповнено правильно.</p>
+
+          <p class="hint">
+            Переконайтеся, що все заповнено правильно.
+          </p>
+
           <div class="summary" id="summary"></div>
         </div>
 
         <div class="screen success" data-step="10">
           <div class="icon">✅</div>
+
           <h2>Анкету заповнено!</h2>
-          <p class="hint">Це поки демо-версія. Далі підключимо збереження відповідей.</p>
+
+          <p class="hint">
+            Це поки демо-версія. Далі підключимо збереження відповідей.
+          </p>
         </div>
       </div>
 
@@ -601,25 +676,39 @@
 
       stepText.textContent = stepNames[currentStep];
 
-      if (currentStep === 0) counter.textContent = `0 / ${total}`;
-      else if (currentStep >= 10) counter.textContent = `${total} / ${total}`;
-      else counter.textContent = `${currentStep} / ${total}`;
+      if (currentStep === 0) {
+        counter.textContent = `0 / ${total}`;
+      } else if (currentStep >= 10) {
+        counter.textContent = `${total} / ${total}`;
+      } else {
+        counter.textContent = `${currentStep} / ${total}`;
+      }
 
       progressFill.style.width = `${Math.min((currentStep / total) * 100, 100)}%`;
 
       backBtn.style.visibility = currentStep === 0 || currentStep === 10 ? "hidden" : "visible";
 
-      if (currentStep === 0) nextBtn.textContent = "Розпочати";
-      else if (currentStep === 9) nextBtn.textContent = "Підтвердити";
-      else if (currentStep === 10) nextBtn.textContent = "Спочатку";
-      else nextBtn.textContent = "Далі";
+      if (currentStep === 0) {
+        nextBtn.textContent = "Розпочати";
+      } else if (currentStep === 9) {
+        nextBtn.textContent = "Підтвердити";
+      } else if (currentStep === 10) {
+        nextBtn.textContent = "Спочатку";
+      } else {
+        nextBtn.textContent = "Далі";
+      }
 
-      if (currentStep === 9) renderSummary();
+      if (currentStep === 9) {
+        renderSummary();
+      }
 
       validate();
 
       setTimeout(() => {
-        card.scrollTo({ top: 0, behavior: "smooth" });
+        card.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
       }, 60);
     }
 
@@ -682,12 +771,20 @@
 
     function restart() {
       Object.values(fields).forEach(field => {
-        if (field.type === "checkbox") field.checked = false;
-        else field.value = "";
+        if (field.type === "checkbox") {
+          field.checked = false;
+        } else {
+          field.value = "";
+        }
       });
 
-      document.querySelectorAll("input[type='radio']").forEach(r => r.checked = false);
-      document.querySelectorAll(".choice").forEach(c => c.classList.remove("selected"));
+      document.querySelectorAll("input[type='radio']").forEach(radio => {
+        radio.checked = false;
+      });
+
+      document.querySelectorAll(".choice").forEach(choice => {
+        choice.classList.remove("selected");
+      });
 
       showStep(0);
     }
@@ -700,8 +797,8 @@
     document.querySelectorAll(".choice input").forEach(input => {
       input.addEventListener("change", () => {
         if (input.type === "radio") {
-          document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => {
-            r.closest(".choice").classList.toggle("selected", r.checked);
+          document.querySelectorAll(`input[name="${input.name}"]`).forEach(radio => {
+            radio.closest(".choice").classList.toggle("selected", radio.checked);
           });
         } else {
           input.closest(".choice").classList.toggle("selected", input.checked);
