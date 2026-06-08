@@ -465,7 +465,7 @@
       <div class="progress-wrap">
         <div class="step-row">
           <span id="stepText">Початок</span>
-          <span id="counter">0 / 9</span>
+          <span id="counter">0 / 8</span>
         </div>
 
         <div class="progress">
@@ -582,26 +582,6 @@
         </div>
 
         <div class="screen" data-step="8">
-          <div class="icon">📸</div>
-
-          <h2>Фото та відео</h2>
-
-          <p class="hint">
-            Чи дозволяєте фото/відеозйомку дитини під час табору?
-          </p>
-
-          <label class="choice">
-            <input type="radio" name="photoPermission" value="Так, дозволяю" />
-            <span>Так, дозволяю</span>
-          </label>
-
-          <label class="choice">
-            <input type="radio" name="photoPermission" value="Ні, не дозволяю" />
-            <span>Ні, не дозволяю</span>
-          </label>
-        </div>
-
-        <div class="screen" data-step="9">
           <div class="icon">📜</div>
 
           <h2>Перевірте анкету</h2>
@@ -613,7 +593,7 @@
           <div class="summary" id="summary"></div>
         </div>
 
-        <div class="screen success" data-step="10">
+        <div class="screen success" data-step="9">
           <div class="icon">✅</div>
 
           <h2>Анкету заповнено!</h2>
@@ -633,19 +613,18 @@
 
   <script>
     let currentStep = 0;
-    const total = 9;
+    const total = 8;
 
     const stepNames = [
       "Початок",
-      "Крок 1 з 9",
-      "Крок 2 з 9",
-      "Крок 3 з 9",
-      "Крок 4 з 9",
-      "Крок 5 з 9",
-      "Крок 6 з 9",
-      "Крок 7 з 9",
-      "Крок 8 з 9",
-      "Крок 9 з 9",
+      "Крок 1 з 8",
+      "Крок 2 з 8",
+      "Крок 3 з 8",
+      "Крок 4 з 8",
+      "Крок 5 з 8",
+      "Крок 6 з 8",
+      "Крок 7 з 8",
+      "Крок 8 з 8",
       "Готово"
     ];
 
@@ -678,7 +657,7 @@
 
       if (currentStep === 0) {
         counter.textContent = `0 / ${total}`;
-      } else if (currentStep >= 10) {
+      } else if (currentStep >= 9) {
         counter.textContent = `${total} / ${total}`;
       } else {
         counter.textContent = `${currentStep} / ${total}`;
@@ -686,19 +665,19 @@
 
       progressFill.style.width = `${Math.min((currentStep / total) * 100, 100)}%`;
 
-      backBtn.style.visibility = currentStep === 0 || currentStep === 10 ? "hidden" : "visible";
+      backBtn.style.visibility = currentStep === 0 || currentStep === 9 ? "hidden" : "visible";
 
       if (currentStep === 0) {
         nextBtn.textContent = "Розпочати";
-      } else if (currentStep === 9) {
+      } else if (currentStep === 8) {
         nextBtn.textContent = "Підтвердити";
-      } else if (currentStep === 10) {
+      } else if (currentStep === 9) {
         nextBtn.textContent = "Спочатку";
       } else {
         nextBtn.textContent = "Далі";
       }
 
-      if (currentStep === 9) {
+      if (currentStep === 8) {
         renderSummary();
       }
 
@@ -713,25 +692,20 @@
     }
 
     function nextStep() {
-      if (currentStep === 10) {
+      if (currentStep === 9) {
         restart();
         return;
       }
 
-      if (currentStep < 10) {
+      if (currentStep < 9) {
         showStep(currentStep + 1);
       }
     }
 
     function prevStep() {
-      if (currentStep > 0 && currentStep < 10) {
+      if (currentStep > 0 && currentStep < 9) {
         showStep(currentStep - 1);
       }
-    }
-
-    function radioValue(name) {
-      const checked = document.querySelector(`input[name="${name}"]:checked`);
-      return checked ? checked.value : "";
     }
 
     function validate() {
@@ -744,7 +718,6 @@
       if (currentStep === 5) valid = fields.address.value.trim().length >= 5;
       if (currentStep === 6) valid = fields.aboutChild.value.trim().length >= 2;
       if (currentStep === 7) valid = fields.safety.checked;
-      if (currentStep === 8) valid = Boolean(radioValue("photoPermission"));
 
       nextBtn.disabled = !valid;
     }
@@ -757,8 +730,7 @@
         ["Номер телефону", fields.phone.value],
         ["Адреса проживання", fields.address.value],
         ["Що важливо знати", fields.aboutChild.value],
-        ["Умови безпеки", fields.safety.checked ? "Ознайомлений / ознайомлена" : ""],
-        ["Фото/відео", radioValue("photoPermission")]
+        ["Умови безпеки", fields.safety.checked ? "Ознайомлений / ознайомлена" : ""]
       ];
 
       summary.innerHTML = data.map(([label, value]) => `
@@ -778,10 +750,6 @@
         }
       });
 
-      document.querySelectorAll("input[type='radio']").forEach(radio => {
-        radio.checked = false;
-      });
-
       document.querySelectorAll(".choice").forEach(choice => {
         choice.classList.remove("selected");
       });
@@ -796,14 +764,7 @@
 
     document.querySelectorAll(".choice input").forEach(input => {
       input.addEventListener("change", () => {
-        if (input.type === "radio") {
-          document.querySelectorAll(`input[name="${input.name}"]`).forEach(radio => {
-            radio.closest(".choice").classList.toggle("selected", radio.checked);
-          });
-        } else {
-          input.closest(".choice").classList.toggle("selected", input.checked);
-        }
-
+        input.closest(".choice").classList.toggle("selected", input.checked);
         validate();
       });
     });
