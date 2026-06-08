@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Табір 2026 — Реєстрація</title>
+  <title>Дитячий табір 2026 — Реєстрація</title>
 
   <style>
     :root {
-      --bg: #101827;
-      --paper: #fff7df;
       --paper2: #fffdf5;
       --orange: #f59e0b;
       --orange2: #d97706;
@@ -17,12 +15,9 @@
       --text: #111827;
       --muted: #6b7280;
       --border: #ead7ad;
-      --radius: 26px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -57,15 +52,17 @@
       width: 100%;
       max-width: 520px;
       min-height: calc(100svh - 24px);
+      max-height: calc(100svh - 24px);
       background:
         linear-gradient(rgba(255, 253, 245, .97), rgba(255, 247, 223, .97)),
         url("data:image/svg+xml,%3Csvg width='360' height='360' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23785523' stroke-opacity='.13'%3E%3Cpath d='M30 90c80 25 125 55 205 20s110 40 120 95' stroke-width='3' stroke-dasharray='10 12'/%3E%3Cpath d='M10 300c70-60 145-25 190-78s105-45 160 5' stroke-width='3' stroke-dasharray='8 10'/%3E%3C/g%3E%3C/svg%3E");
       border-radius: 30px;
       box-shadow: 0 28px 80px rgba(0,0,0,.38);
-      overflow: hidden;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       position: relative;
+      scroll-behavior: smooth;
     }
 
     .header {
@@ -73,6 +70,7 @@
       background: rgba(255, 255, 255, .45);
       border-bottom: 1px solid rgba(120, 83, 35, .14);
       backdrop-filter: blur(12px);
+      flex-shrink: 0;
     }
 
     .badge {
@@ -107,12 +105,12 @@
 
     .progress-wrap {
       padding: 14px 20px 0;
+      flex-shrink: 0;
     }
 
     .step-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       color: var(--muted);
       font-size: 13px;
       font-weight: 800;
@@ -131,28 +129,36 @@
       width: 0%;
       background: linear-gradient(90deg, var(--orange), var(--green));
       border-radius: 999px;
-      transition: .25s;
+      transition: width .35s ease;
     }
 
     .content {
       flex: 1;
-      padding: 22px 20px 100px;
+      padding: 22px 20px 24px;
       display: flex;
       flex-direction: column;
     }
 
     .screen {
       display: none;
-      animation: fade .22s ease;
     }
 
     .screen.active {
       display: block;
+      animation: cardIn .32s cubic-bezier(.2,.8,.2,1);
     }
 
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateX(18px) scale(.98);
+        filter: blur(3px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+      }
     }
 
     .icon {
@@ -165,6 +171,18 @@
       font-size: 34px;
       box-shadow: 0 12px 28px rgba(245, 158, 11, .24);
       margin-bottom: 22px;
+      animation: iconPop .45s ease both;
+    }
+
+    @keyframes iconPop {
+      from {
+        opacity: 0;
+        transform: scale(.8) rotate(-6deg);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
     }
 
     h2 {
@@ -176,10 +194,15 @@
     }
 
     .hint {
-      margin: 13px 0 24px;
+      margin: 13px 0 20px;
       color: var(--muted);
       font-size: 16px;
       line-height: 1.5;
+    }
+
+    .hint strong {
+      color: var(--orange2);
+      font-weight: 900;
     }
 
     input,
@@ -193,10 +216,12 @@
       outline: none;
       color: var(--text);
       font-family: inherit;
+      scroll-margin-bottom: 130px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
     }
 
     textarea {
-      min-height: 150px;
+      min-height: 140px;
       resize: vertical;
       line-height: 1.45;
     }
@@ -206,6 +231,7 @@
       border-color: var(--orange);
       box-shadow: 0 0 0 5px rgba(245, 158, 11, .15);
       background: white;
+      transform: translateY(-2px);
     }
 
     .choice {
@@ -220,6 +246,11 @@
       font-weight: 800;
       margin-bottom: 12px;
       cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
+    }
+
+    .choice:active {
+      transform: scale(.97);
     }
 
     .choice input {
@@ -267,16 +298,16 @@
     }
 
     .bottom-bar {
-      position: absolute;
-      left: 0;
-      right: 0;
+      position: sticky;
       bottom: 0;
       padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
-      background: rgba(255, 253, 245, .9);
+      background: rgba(255, 253, 245, .92);
       border-top: 1px solid rgba(120, 83, 35, .15);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
       display: flex;
       gap: 10px;
+      z-index: 20;
+      flex-shrink: 0;
     }
 
     button {
@@ -287,6 +318,11 @@
       font-weight: 900;
       font-family: inherit;
       cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+    }
+
+    button:active {
+      transform: scale(.97);
     }
 
     .back {
@@ -328,25 +364,64 @@
       .card {
         max-width: 620px;
         min-height: 760px;
+        max-height: 760px;
       }
 
-      .title {
-        font-size: 44px;
-      }
+      .title { font-size: 44px; }
+      h2 { font-size: 38px; }
 
-      h2 {
-        font-size: 38px;
-      }
-
-      .content {
-        padding-left: 34px;
-        padding-right: 34px;
-      }
-
+      .content,
       .header,
       .progress-wrap {
         padding-left: 34px;
         padding-right: 34px;
+      }
+    }
+
+    @media (max-height: 680px) {
+      .header {
+        padding-top: 14px;
+        padding-bottom: 10px;
+      }
+
+      .badge {
+        margin-bottom: 8px;
+      }
+
+      .title {
+        font-size: 29px;
+      }
+
+      .subtitle {
+        font-size: 13px;
+      }
+
+      .progress-wrap {
+        padding-top: 10px;
+      }
+
+      .content {
+        padding-top: 16px;
+      }
+
+      .icon {
+        width: 58px;
+        height: 58px;
+        font-size: 29px;
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        font-size: 27px;
+      }
+
+      .hint {
+        font-size: 15px;
+        margin-bottom: 16px;
+      }
+
+      textarea {
+        min-height: 110px;
       }
     }
   </style>
@@ -356,9 +431,9 @@
   <main class="app">
     <section class="card">
       <header class="header">
-        <div class="badge">🗺️ Реєстрація на місію</div>
-        <h1 class="title">Табір 2026</h1>
-        <p class="subtitle">10–12 липня · діти 6–11 років · вул. Квіткова 8а</p>
+        <div class="badge">⛪ Церква “Жива Надія”</div>
+        <h1 class="title">Дитячий табір 2026</h1>
+        <p class="subtitle">10–12 липня · для дітей 6–11 років · вул. Квіткова 8а</p>
       </header>
 
       <div class="progress-wrap">
@@ -373,9 +448,18 @@
 
       <div class="content">
         <div class="screen active" data-step="0">
-          <div class="icon">🚩</div>
-          <h2>Приєднати дитину до табору</h2>
-          <p class="hint">Заповнення займе близько 2 хвилин. Кожне питання буде окремим кроком.</p>
+          <div class="icon">🏕️</div>
+          <h2>Запрошуємо дитину до табору!</h2>
+
+          <p class="hint">
+            Церква <strong>“Жива Надія”</strong> проводить дитячий табір — три дні радості,
+            дружби, цікавих локацій, ігор, творчості, біблійних уроків та незабутніх вражень.
+          </p>
+
+          <p class="hint">
+            Будь ласка, заповніть коротку анкету учасника. Це допоможе нам краще
+            підготуватися, подбати про безпеку дитини та правильно розподілити дітей по командах.
+          </p>
         </div>
 
         <div class="screen" data-step="1">
@@ -506,6 +590,7 @@
     const backBtn = document.getElementById("backBtn");
     const nextBtn = document.getElementById("nextBtn");
     const summary = document.getElementById("summary");
+    const card = document.querySelector(".card");
 
     function showStep(step) {
       currentStep = step;
@@ -522,7 +607,7 @@
 
       progressFill.style.width = `${Math.min((currentStep / total) * 100, 100)}%`;
 
-      backBtn.style.visibility = currentStep === 0 ? "hidden" : "visible";
+      backBtn.style.visibility = currentStep === 0 || currentStep === 10 ? "hidden" : "visible";
 
       if (currentStep === 0) nextBtn.textContent = "Розпочати";
       else if (currentStep === 9) nextBtn.textContent = "Підтвердити";
@@ -532,6 +617,10 @@
       if (currentStep === 9) renderSummary();
 
       validate();
+
+      setTimeout(() => {
+        card.scrollTo({ top: 0, behavior: "smooth" });
+      }, 60);
     }
 
     function nextStep() {
